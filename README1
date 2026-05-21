@@ -1,0 +1,83 @@
+# Manufacturing Demand Cleaning Pipeline
+
+Python pipeline for cleaning and consolidating manufacturing demand data exported from ERP systems.
+
+## Project Overview
+
+This project focuses on transforming raw demand schedules into a clean and analysis-ready dataset for manufacturing and supply chain planning.
+
+The pipeline handles:
+- ERP-exported CSV files
+- Missing FG values
+- Dynamic weekly demand filtering
+- Multi-row FG consolidation
+- Numeric conversion and data cleaning
+- Weekly demand preservation for production visibility
+
+## Technologies Used
+
+- Python
+- Pandas
+
+## Business Logic
+
+The raw ERP demand file contains:
+- Finished Goods (FG)
+- Current stock
+- Work in progress (WIP)
+- Demand
+- Backlog
+- Weekly demand buckets
+
+Each FG may appear across multiple rows due to ERP export structure.
+
+The pipeline:
+1. Forward fills missing FG identifiers
+2. Filters only project-specific FG numbers
+3. Dynamically selects the first 12 production weeks
+4. Converts weekly demand columns to numeric values
+5. Consolidates all rows into a single row per FG
+6. Preserves weekly demand visibility for supply planning
+
+## Key Features
+
+### Dynamic Week Detection
+
+The script dynamically identifies valid production weeks while excluding future-year duplicated week columns.
+
+Example:
+- Keeps:
+  - WK.51
+  - WK.52
+  - WK.01
+- Excludes:
+  - WK.51.1
+  - WK.02.1
+
+### ERP Data Cleaning
+
+Handles common ERP export issues:
+- Missing FG values
+- Mixed data types
+- String-formatted numeric columns
+- Multi-line FG records
+
+## Example Output
+
+| FG | STOCK | WIP | WK.51 | WK.52 | WK.01 |
+|----|-------|-----|--------|--------|--------|
+| FG-1001 | 1200 | 300 | 500 | 600 | 550 |
+
+## Future Improvements
+
+Planned future integrations:
+- BOM joins
+- Inventory validation
+- Open PO integration
+- Supplier lead time analysis
+- Octopart API integration
+- Power BI dashboards
+
+## Author
+
+Josue Gonzalez
